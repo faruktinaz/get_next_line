@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ogenc <ogenc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/31 12:15:59 by ogenc             #+#    #+#             */
-/*   Updated: 2023/01/31 15:21:49 by ogenc            ###   ########.fr       */
+/*   Created: 2023/01/31 13:15:23 by ogenc             #+#    #+#             */
+/*   Updated: 2023/01/31 16:23:46 by ogenc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*read_line(int fd, char *buffer)
 {
@@ -39,15 +39,15 @@ char	*read_line(int fd, char *buffer)
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
+	static char	*b_buffer[OPEN_MAX];
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd > OPEN_MAX)
 		return (0);
-	buffer = read_line(fd, buffer);
-	if (buffer == NULL)
+	b_buffer[fd] = read_line(fd, b_buffer[fd]);
+	if (b_buffer[fd] == NULL)
 		return (NULL);
-	line = ft_newline(buffer);
-	buffer = new_buffer(buffer);
+	line = ft_newline(b_buffer[fd]);
+	b_buffer[fd] = new_buffer(b_buffer[fd]);
 	return (line);
 }
